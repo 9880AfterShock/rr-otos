@@ -9,7 +9,7 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 
-@TeleOp(name = "Otos testing opmode")
+@TeleOp(name = "OTOS testing opmode")
 public class OTOSTestingOp extends LinearOpMode {
     // Create an instance of the sensor
     SparkFunOTOS myOtos;
@@ -76,7 +76,7 @@ public class OTOSTestingOp extends LinearOpMode {
         telemetry.update();
 
         myOtos.setLinearScalar(0.072);
-        myOtos.setAngularScalar(1.0);
+        myOtos.setAngularScalar(1.03633655029471);
         // Set the desired units for linear and angular measurements. Can be either
         // meters or inches for linear, and radians or degrees for angular. If not
         // set, the default is inches and degrees. Note that this setting is not
