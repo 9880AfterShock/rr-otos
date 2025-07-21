@@ -63,7 +63,7 @@ public final class MecanumDrive {
                 RevHubOrientationOnRobot.UsbFacingDirection.LEFT;
 
         // drive model parameters
-        public double inPerTick = 1;
+        public double inPerTick = 1; //is this needed with OTOS?
         public double lateralInPerTick = inPerTick;
         public double trackWidthTicks = 0;
 
