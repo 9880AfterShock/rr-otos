@@ -9,11 +9,11 @@ import java.util.LinkedList;
 import java.util.Queue;
 
 public class ResettableLift {
-    private DcMotorEx liftMotor;
-    private DigitalChannel liftTouchSensor;
+    private final DcMotorEx liftMotor;
+    private final DigitalChannel liftTouchSensor;
     private LiftState state = LiftState.DOWN;
-    private Queue<LiftMessage> messageQueue = new LinkedList<>();
-    private int speed = 10;
+    private final Queue<LiftMessage> messageQueue = new LinkedList<>();
+
     public ResettableLift(OpMode om) {
         this.liftMotor = om.hardwareMap.get(DcMotorEx.class,"lift");
         this.liftTouchSensor = om.hardwareMap.get(DigitalChannel.class,"lift_touch");
@@ -41,6 +41,7 @@ public class ResettableLift {
                 state = LiftState.DOWN;
                 break;
             case NONE:
+                int speed = 10;
                 switch (state) {
                     case STOPPED:
                         liftMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
@@ -48,11 +49,11 @@ public class ResettableLift {
                         break;
                     case UP:
                         liftMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                        liftMotor.setTargetPosition(liftMotor.getCurrentPosition()+speed);
+                        liftMotor.setTargetPosition(liftMotor.getCurrentPosition()+ speed);
                         break;
                     case DOWN:
                         liftMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                        liftMotor.setTargetPosition(liftMotor.getCurrentPosition()-speed);
+                        liftMotor.setTargetPosition(liftMotor.getCurrentPosition()- speed);
                         break;
                     case RESETTING:
                         liftMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
