@@ -64,6 +64,7 @@ public class OTOSTestingOp extends LinearOpMode {
             // Log the position to the telemetry
             telemetry.addData("X coordinate", pos.x);
             telemetry.addData("Y coordinate", pos.y);
+            telemetry.addData("Velocity", myOtos.getVelocity());
             telemetry.addData("Heading angle", pos.h);
 
             // Update the telemetry on the driver station
