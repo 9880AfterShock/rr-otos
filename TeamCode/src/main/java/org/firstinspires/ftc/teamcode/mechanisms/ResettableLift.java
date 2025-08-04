@@ -13,15 +13,30 @@ public class ResettableLift {
     private final DigitalChannel liftTouchSensor;
     private LiftState state = LiftState.DOWN;
     private final Queue<LiftMessage> messageQueue = new LinkedList<>();
+    private int speed;
 
-    public ResettableLift(OpMode om) {
-        this.liftMotor = om.hardwareMap.get(DcMotorEx.class,"lift");
-        this.liftTouchSensor = om.hardwareMap.get(DigitalChannel.class,"lift_touch");
+    public ResettableLift(OpMode om,String liftMotorName, String liftTouchName,int speed) {
+        this.speed = speed;
+        this.liftMotor = om.hardwareMap.get(DcMotorEx.class,liftMotorName);
+        this.liftTouchSensor = om.hardwareMap.get(DigitalChannel.class,liftTouchName);
         this.liftTouchSensor.setMode(DigitalChannel.Mode.INPUT);
     }
 
+    public ResettableLift(DcMotorEx liftMotor, DigitalChannel liftTouch,int speed) {
+        this.speed = speed;
+        this.liftMotor = liftMotor;
+        this.liftTouchSensor = liftTouch;
+        this.liftTouchSensor.setMode(DigitalChannel.Mode.INPUT);
+    }
+
+    public LiftState getState() {
+        return state;
+    }
+
     public void addMessage(LiftMessage message) {
-        messageQueue.add(message);
+        if (message != null) {
+            messageQueue.add(message);
+        }
     }
 
     public void update() {
@@ -41,7 +56,6 @@ public class ResettableLift {
                 state = LiftState.DOWN;
                 break;
             case NONE:
-                int speed = 10;
                 switch (state) {
                     case STOPPED:
                         liftMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
@@ -57,9 +71,10 @@ public class ResettableLift {
                         break;
                     case RESETTING:
                         liftMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-                        liftMotor.setPower(-1);
+                        liftMotor.setPower(-0.25*(Math.abs(speed)/speed));
                         if (!liftTouchSensor.getState()) {
                             liftMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+                            state = LiftState.STOPPED;
                         }
                 }
                 break;
